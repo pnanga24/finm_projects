@@ -57,6 +57,5 @@ int my_max(int *array_numbers, int array_size)
 int* my_sort(int *array_numbers, int array_size)
 {
     static int *head=array_numbers;
-
     return head;
 }
