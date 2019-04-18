@@ -7,7 +7,6 @@
 #include <stdint.h>
 #include <iostream>
 
-int my_factorial(int number);
 void allocate_matrix(double **a, int rows, int columns);
 void initialize_a(double *a, int rows, int columns);
 void initialize_b(double *a, int rows, int columns);
