@@ -47,16 +47,48 @@ double my_average(int *array_numbers, int array_size)
 
 int my_max(int *array_numbers, int array_size)
 {
-    int max;
+    int max = array_numbers[0];
     for (int i=0; i < array_size; i++)
-        max = array_numbers[i] > max ? array_numbers[i] : max;
+        max = (array_numbers[i] > max ? array_numbers[i] : max);
     return max;
 }
 
+void swap(int *array_numbers, int i, int j)
+{
+    int tmp = array_numbers[i];
+    array_numbers[i] = array_numbers[j];
+    array_numbers[j] = tmp;
+}
+
+int place_pivot(int *array_numbers, int start, int end) {
+    int pivot = array_numbers[start];
+    int low = start + 1;
+    int high = end;
+    while (low <= high) {
+        if (array_numbers[low] <= pivot)
+            low++;
+        else if (array_numbers[high] >= pivot)
+            high--;
+        else {
+            swap(array_numbers, low, high);
+        }
+    }
+    swap(array_numbers, start, high);
+    return high;
+}
+
+void quick_sort(int *array_numbers, int start, int end)
+{
+    if (start < end) {
+        int pivot = place_pivot(array_numbers, start, end);
+        quick_sort(array_numbers, start, pivot-1);
+        quick_sort(array_numbers, pivot+1, end);
+    }
+}
 
 int* my_sort(int *array_numbers, int array_size)
 {
-    // implement merge sort
     static int *head=array_numbers;
+    quick_sort(array_numbers, 0, array_size-1);
     return head;
 }
