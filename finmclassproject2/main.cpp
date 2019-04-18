@@ -47,6 +47,7 @@ int main() {
     TEST_FUNCTION(check_b(b,3),true);
     TEST_FUNCTION(check_c(c,3),true);
 
+
 /* You want to calculate
  *
  *      c= b * a + b
@@ -88,10 +89,9 @@ int main() {
  * a,b and c as shown above
  */
 
-
-//    initialize_a(a,3,5);
-//    initialize_b(b,1,5);
-//    initialize_c(c,1,5);
+    initialize_a(a,5,5);
+    initialize_b(b,1,5);
+    initialize_c(c,1,5);
 
 // You need to modify the following functions to get the results
 // For a the matrix and vectors above
@@ -99,17 +99,17 @@ int main() {
 // Already works for 5x5 and 1x5 and 1x5
 // You will certainly need to create another function product_sum_5 based on product_sum to make it work
 
-//    product_sum_5(b,(double (*)[5])a,c);
-//    std::cout << std::endl;
+    product_sum_5(b,(double (*)[5])a,c);
+    std::cout << std::endl;
 
 // You need to display the result with the function display_matrix_5
 //  that you will create based on display_matrix_3
 
-//    display_matrix_5((double (*)[5]) a);
-//    std::cout << std::endl;
+    display_matrix_5((double (*)[5]) a);
+    std::cout << std::endl;
 
-//    display_vector(c,5);
-//    TEST_FUNCTION(check_c_result_5(c),true);
+    display_vector(c,5);
+    TEST_FUNCTION(check_c_result_5(c),true);
 // You should see displayed:
 // You succeeded to pass 11/11
 

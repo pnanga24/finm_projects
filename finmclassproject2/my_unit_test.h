@@ -32,6 +32,7 @@ bool check_a(double *a);
 bool check_b(double *a,int size);
 bool check_c(double *a,int size);
 bool check_c_result_3(double *a);
+bool check_c_result_5(double *a);
 
 
 #endif //IOER_HOMEWORK1_MY_UNIT_TEST_H

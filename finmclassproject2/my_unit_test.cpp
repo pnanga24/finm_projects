@@ -57,3 +57,8 @@ bool check_c_result_3(double *a)
 {
     return a[0]==4 && a[1]==5 && a[2]==6;
 }
+
+bool check_c_result_5(double *a)
+{
+    return a[0]==6 && a[1]==7 && a[2]==8 && a[3] == 9 && a[4] == 10;
+}
