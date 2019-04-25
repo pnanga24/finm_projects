@@ -13,7 +13,6 @@ int main() {
      * (100,true,1,10,1000,"JPM","APPL",ordertype::LIMIT);
      *
      * */
-#if 0
     Order o1(100,true,1,10,1000,"JPM","APPL",ordertype::LIMIT);
 
     TEST_FUNCTION(o1.getID(),1);
@@ -97,9 +96,6 @@ int main() {
 
 
     TEST_FUNCTION(sum_quantity,57100-100*40);
-
-#endif
-
     PRINT_RESULTS();
     return 0;
 }
