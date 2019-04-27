@@ -23,22 +23,21 @@ private:
     char symbol[20];
     ordertype type;
 public:
-    Order(long timestamp_,
-            bool is_buy_,
-            unsigned int id_,
-            unsigned int price_,
-            unsigned int quantity_,
-            const char * venue_,
-            const char * symbol_,
-            ordertype type_)
+
+    Order(long timestamp_, bool is_buy_, unsigned int id_, unsigned int price_,
+          unsigned int quantity_, const char * venue_, const char * symbol_,
+          ordertype type_) : timestamp(timestamp_), is_buy(is_buy_), id(id_), price(price_),
+                             quantity(quantity_), type(type_)
     {
-        timestamp=timestamp_;
-        id=id_;
-        price=price_;
-        quantity=quantity_;
-        strcpy(venue,venue_);
-        type=type_;
-        strcpy(symbol,symbol_);
+        strcpy(venue, venue_);
+        strcpy(symbol, symbol_);
+    }
+
+    Order (const Order& o) : timestamp(o.timestamp), is_buy(o.is_buy), id(o.id), price(o.price),
+    quantity(o.quantity), type(o.type)
+    {
+        strcpy(venue, o.venue);
+        strcpy(symbol, o.symbol);
     }
 
     char * getVenue()
@@ -140,7 +139,9 @@ public:
         capacity = vec.capacity;
         current_new_order_offset = vec.current_new_order_offset;
         orders = new Order*[capacity]{nullptr};
-        std::copy(vec.orders, vec.orders + vec.current_new_order_offset, orders);
+        for (int i=0; i<vec.current_new_order_offset; i++) {
+            orders[i] = new Order(*vec.orders[i]);
+        }
     }
 
     ~VectorOrders() {
@@ -162,12 +163,13 @@ public:
     bool double_list_orders_size()
     {
         // You will use this function
-        // To reallocate an the array and doublinc its size
+        // To reallocate an the array and doubling its size
         Order **new_orders = new Order *[capacity*2]{nullptr};
         std::copy(orders, orders + current_new_order_offset, new_orders);
         capacity *= 2;
         delete[] orders;
         orders = new_orders;
+        return true;
     }
 
     unsigned int get_size()
