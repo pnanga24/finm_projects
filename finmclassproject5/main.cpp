@@ -25,7 +25,7 @@ int main() {
     TEST_FUNCTION(o1.is_valid(), false);
     o1.setVenue("BARX");
     TEST_FUNCTION(o1.is_valid(), true);
-#if 0
+#if 1
     Gateway gatewayIN;
     gatewayIN.stop();
     FIX42Parser jpmx_parser;
@@ -110,6 +110,9 @@ int main() {
     Message msg8 = gatewayOut.return_stored_message();
     TEST_FUNCTION(msg8.getMessageType(),message_type::heartbeat);
 
+    gatewayIN.add_parser("SEBX",&sebX_parser);
+    gatewayIN.add_composer("SEBX",&sebX_composer);
+
     std::string message9 = "LOGON|";
     TEST_FUNCTION(gatewayIN.process_message_from_exchange_for_order("SEBX",message9),true);
     Message msg9 = gatewayIN.return_stored_message();
@@ -120,7 +123,7 @@ int main() {
     Message msg10 = gatewayIN.return_stored_message();
     TEST_FUNCTION(msg10.getMessageType(),message_type::logout);
 
-    TEST_STRING(gatewayOut.send_message_for_order("SEBX",msg6).c_str(),"NEWORDER|3|100|SEBX|MQ|");
+    TEST_STRING(gatewayOut.send_message_for_order("SEBX",msg6).c_str(),"NEWORDER|111|50|SEBX|MQ|");
 
 #endif
     PRINT_RESULTS();
