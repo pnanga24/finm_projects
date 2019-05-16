@@ -57,7 +57,6 @@ bool TradingStrategy::process_market_response()
     if(ordermanager_to_strategy.empty())
         return true;
     ExecutionOrder &order = ordermanager_to_strategy.front();
-    ordermanager_to_strategy.pop();
     switch (order.getState()) {
         case orderstate::FILLED:
             positions[order.getSymbol()] += order.getPrice() * order.getQuantity() * (order.isBuy() ? 1 : -1);
@@ -67,6 +66,7 @@ bool TradingStrategy::process_market_response()
             number_of_rejections++;
             break;
     }
+    ordermanager_to_strategy.pop();
     return true;
 }
 

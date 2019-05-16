@@ -26,7 +26,6 @@ bool MarketSimulator::handle_order(){
     if(ordermanager_to_simulator.empty())
         return true;
     const Order &o = ordermanager_to_simulator.front();
-    ordermanager_to_simulator.pop();
 
     const bool is_tradeable = list_symbols.find(o.getSymbol()) != list_symbols.end();
 
@@ -49,5 +48,6 @@ bool MarketSimulator::handle_order(){
         new_execution.setExecutionID(execution_id++);
         simulator_to_ordermanager.push(new_execution);
     }
+    ordermanager_to_simulator.pop();
     return true;
 }

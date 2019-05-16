@@ -12,7 +12,6 @@ bool OrderManager::handle_execution_order(){
         return true;
 
     const ExecutionOrder &e = simulator_to_ordermanager.front();
-    simulator_to_ordermanager.pop();
     ordermanager_to_strategy.push(e);
     orderstate state = e.getState();
     switch (state) {
@@ -26,6 +25,7 @@ bool OrderManager::handle_execution_order(){
         case ACKNOWLEDGED:
             list_orders[e.getID()] = ExecutionOrder(e);
     }
+    simulator_to_ordermanager.pop();
     return true;
 };
 
@@ -65,7 +65,6 @@ bool OrderManager::handle_order(){
     if (strategy_to_ordermanager.empty())
         return true;
     const Order &e = strategy_to_ordermanager.front();
-    strategy_to_ordermanager.pop();
 
     int qty = e.getQuantity();
     int pos = qty * e.getPrice() * (e.isBuy() ? 1 : -1);
@@ -73,9 +72,13 @@ bool OrderManager::handle_order(){
         ExecutionOrder f(e);
         f.setState(orderstate::REJECTED);
         ordermanager_to_strategy.push(f);
+        strategy_to_ordermanager.pop();
         return false;
     }
     ordermanager_to_simulator.push(e);
-    list_orders.insert(std::make_pair(e.getID(), e));
+    ExecutionOrder f(e);
+    f.setState(orderstate::OPEN);
+    list_orders.insert(std::make_pair(e.getID(), f));
+    strategy_to_ordermanager.pop();
     return true;
 };
