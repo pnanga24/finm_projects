@@ -58,21 +58,29 @@ bool TradingStrategy::process_market_response()
         return true;
     ExecutionOrder &order = ordermanager_to_strategy.front();
     ordermanager_to_strategy.pop();
-
+    switch (order.getState()) {
+        case orderstate::FILLED:
+            positions[order.getSymbol()] += order.getPrice() * order.getQuantity() * (order.isBuy() ? 1 : -1);
+            number_of_fills++;
+            break;
+        case orderstate::REJECTED:
+            number_of_rejections++;
+            break;
+    }
     return true;
 }
 
 int TradingStrategy::get_position(std::string symbol)
 {
-        return 0;
+    return positions[symbol];
 }
 
 unsigned int TradingStrategy::get_number_of_rejections() {
-    return 0;
+    return number_of_rejections;
 }
 
 unsigned int TradingStrategy::get_number_of_fills() {
-    return 0;
+    return number_of_fills;
 }
 
 void TradingStrategy::reset_position(){

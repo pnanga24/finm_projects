@@ -40,6 +40,18 @@ public:
         strcpy(symbol,symbol_);
     }
 
+    Order(const Order &o)
+    {
+        is_buy=o.is_buy;
+        timestamp=o.timestamp;
+        id=o.id;
+        price=o.price;
+        quantity=o.quantity;
+        strcpy(venue,o.venue);
+        type=o.type;
+        strcpy(symbol,o.symbol);
+    }
+
     const char * getVenue() const;
     const char * getSymbol() const;
     unsigned int getID() const;
@@ -69,7 +81,7 @@ public:
     ExecutionOrder():Order(),state(orderstate::OPEN) {}
     ExecutionOrder(const Order &o):Order(o.getTimeStamp(),
             o.isBuy(),o.getID(),o.getPrice(),o.getQuantity(),
-            o.getVenue(),o.getSymbol(),o.getOrderType()){};
+            o.getVenue(),o.getSymbol(),o.getOrderType()), state(orderstate::OPEN){};
     orderstate getState() const {return state;};
     void setState(orderstate e){state=e;}
     void setExecutionID(unsigned int id){execution_id=id;}

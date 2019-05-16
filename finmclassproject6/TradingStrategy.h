@@ -13,7 +13,7 @@
 
 class Signal{
 public:
-    bool is_tradeable(BookUpdate &bu){return true;}
+    bool is_tradeable(BookUpdate &bu){return bu.get_level() == 0;}
 };
 
 class Execution{
