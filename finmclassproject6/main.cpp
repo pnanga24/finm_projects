@@ -302,6 +302,71 @@ int main() {
 
     /* Write the unit tests for amendment after this part */
 
+    TradingStrategy ts3(strategy_to_ordermanager,
+                        ordermanager_to_strategy,
+                        ordermanager_to_simulator,
+                        simulator_to_ordermanager);
+
+    ts3.start();
+
+    {
+        BookUpdate bu4(0, 1, 10000, "BARX", false, "MSFT");
+        ts3.process_book_update(bu4);
+        order_manager.handle_order();
+        Order amend(0, false, 1, 1, 5000, "BARX", "MSFT"); // amend order
+        ts3.amend_order(amend);
+        order_manager.handle_order();
+        simulator.handle_order();
+        order_manager.handle_execution_order();
+        order_manager.handle_execution_order();
+        ts3.process_market_response();
+        ts3.process_market_response();
+    }
+
+    TEST_FUNCTION(order_manager.get_position("MSFT"),-35000);
+    TEST_FUNCTION(ts3.get_position("MSFT"),-5000);
+    TEST_FUNCTION(ts3.get_number_of_rejections(),0);
+
+    {
+        BookUpdate bu5(0, 1, 10000, "BARX", false, "MSFT");
+        ts3.process_book_update(bu5);
+        order_manager.handle_order();
+        Order amend(0, false, 2, 1, 5000, "BARX", "MSFT");
+        ts3.amend_order(amend);
+        order_manager.handle_order();
+        Order amend2(0, false, 2, 1, 15000, "BARX", "MSFT"); // should process most recent amendment
+        ts3.amend_order(amend2);
+        order_manager.handle_order();
+        simulator.handle_order();
+        order_manager.handle_execution_order();
+        order_manager.handle_execution_order();
+        ts3.process_market_response();
+        ts3.process_market_response();
+    }
+
+    TEST_FUNCTION(order_manager.get_position("MSFT"),-50000);
+    TEST_FUNCTION(ts3.get_position("MSFT"),-20000);
+    TEST_FUNCTION(ts3.get_number_of_rejections(),0);
+
+    {
+        BookUpdate bu5(0, 1, 10000, "BARX", false, "MSFT");
+        ts3.process_book_update(bu5);
+        order_manager.handle_order();
+        Order amend(0, false, 3, 3, 5000, "BARX", "MSFT"); // attempting to change price
+        ts3.amend_order(amend);
+        order_manager.handle_order();
+        simulator.handle_order();
+        order_manager.handle_execution_order();
+        order_manager.handle_execution_order();
+        ts3.process_market_response();
+        ts3.process_market_response();
+        ts3.process_market_response();
+    }
+
+    TEST_FUNCTION(order_manager.get_position("MSFT"),-60000);
+    TEST_FUNCTION(ts3.get_position("MSFT"),-30000);
+    TEST_FUNCTION(ts3.get_number_of_rejections(),1);
+
     PRINT_RESULTS();
     return 0;
 }

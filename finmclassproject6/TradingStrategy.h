@@ -71,6 +71,7 @@ public:
     bool process_book_update(BookUpdate &bu);
     bool process_execution();
     bool process_market_response();
+    bool amend_order(const Order &o);
     int get_position(std::string symbol);
     unsigned int get_number_of_rejections();
     unsigned int get_number_of_fills();

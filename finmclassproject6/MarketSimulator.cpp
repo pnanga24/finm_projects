@@ -34,6 +34,14 @@ bool MarketSimulator::handle_order(){
         new_execution.setState(o.getQuantity()>1000?orderstate::ACKNOWLEDGED:orderstate::REJECTED);
         new_execution.setExecutionID(execution_id++);
         simulator_to_ordermanager.push(new_execution);
+        ordermanager_to_simulator.pop();
+        while (!ordermanager_to_simulator.empty() &&
+                ordermanager_to_simulator.front().getID() == new_execution.getID()) {
+            Order &p = ordermanager_to_simulator.front();
+            if (order_match(p, new_execution))
+                new_execution.setQuantity(p.getQuantity());
+            ordermanager_to_simulator.pop();
+        }
         new_execution.setState(orderstate::FILLED);
 //            std::cout << "simulator push a fill|" <<
 //                        new_execution.getPrice() << "|"  <<
@@ -47,7 +55,13 @@ bool MarketSimulator::handle_order(){
         new_execution.setState(orderstate::REJECTED);
         new_execution.setExecutionID(execution_id++);
         simulator_to_ordermanager.push(new_execution);
+        ordermanager_to_simulator.pop();
     }
-    ordermanager_to_simulator.pop();
     return true;
+}
+
+bool MarketSimulator::order_match(const Order &o, const Order &e)
+{
+    return (o.getPrice() == e.getPrice() && strcmp(o.getSymbol(), e.getSymbol()) == 0
+            && strcmp(o.getVenue(), e.getVenue()) == 0);
 }

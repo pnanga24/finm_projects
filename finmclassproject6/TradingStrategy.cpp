@@ -34,6 +34,12 @@ bool TradingStrategy::process_book_update(BookUpdate &bu){
     return process_execution();
 }
 
+bool TradingStrategy::amend_order(const Order &o)
+{
+    strategy_to_ordermanager.push(o);
+    return true;
+}
+
 bool TradingStrategy::process_execution() {
     if(!is_working)
         return false;

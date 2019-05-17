@@ -44,7 +44,7 @@ public:
     unsigned int get_number_of_open_orders();
     unsigned int get_number_of_non_acknowledged_orders();
     int get_position(std::string symbol);
-
+    bool order_match (const Order &o, const Order &e);
 };
 
 

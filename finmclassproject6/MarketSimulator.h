@@ -25,6 +25,7 @@ public:
 
     virtual void start() {is_working=true;}
     virtual void stop() {is_working=false;}
+    bool order_match(const Order &o, const Order &e);
 
 };
 

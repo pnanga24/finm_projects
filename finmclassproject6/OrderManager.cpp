@@ -75,10 +75,32 @@ bool OrderManager::handle_order(){
         strategy_to_ordermanager.pop();
         return false;
     }
+    // amendment handling
+    auto elem = list_orders.find(e.getID());
+    if (elem != list_orders.end()) {
+        ExecutionOrder o = elem->second;
+        if (order_match(o, e)) {
+            if (list_orders[e.getID()].getState() == orderstate::ACKNOWLEDGED)
+                list_orders[e.getID()] = e;
+        } else {
+            ExecutionOrder f(e);
+            f.setState(orderstate::REJECTED);
+            ordermanager_to_strategy.push(f);
+            strategy_to_ordermanager.pop();
+            return false;
+        }
+    }
+
     ordermanager_to_simulator.push(e);
     ExecutionOrder f(e);
     f.setState(orderstate::OPEN);
     list_orders.insert(std::make_pair(e.getID(), f));
     strategy_to_ordermanager.pop();
     return true;
-};
+}
+
+bool OrderManager::order_match(const Order &o, const Order &e)
+{
+    return (o.getPrice() == e.getPrice() && strcmp(o.getSymbol(), e.getSymbol()) == 0
+                   && strcmp(o.getVenue(), e.getVenue()) == 0);
+}
