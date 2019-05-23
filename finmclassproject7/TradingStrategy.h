@@ -10,14 +10,22 @@
 #include <unordered_map>
 #include <string>
 #include <iostream>
+#include <queue>
 
 class Signal{
+private:
+    std::queue<std::pair<unsigned int, double>> price_queue_5;
+    std::queue<std::pair<unsigned int, double>> price_queue_20;
+    double sum5;
+    double sum20;
+    int sign_diff_520;
 public:
-    void insert_book_update(BookUpdate bu){};
-    double get_5min_moving_average(){return 0;}
-    double get_20min_moving_average(){return 0;}
-    bool go_long(){return false;}
-    bool go_short(){return false;}
+    Signal() : sum5(0), sum20(0), sign_diff_520(0) {};
+    void insert_book_update(BookUpdate bu);
+    double get_5min_moving_average();
+    double get_20min_moving_average();
+    bool go_long();
+    bool go_short();
     bool is_tradeable(BookUpdate &bu){return true;}
 };
 
@@ -30,7 +38,7 @@ public:
     Execution():tradeable(false){}
     bool insert_order(long timestamp_,
                       bool is_buy_,
-                      unsigned int price_,
+                      price_t price_,
                       unsigned int quantity_,
                       const char * venue_,
                       const char * symbol_,
@@ -46,10 +54,10 @@ private:
     Signal signal;
     Execution execution;
     int order_id;
-    std::unordered_map<std::string,int> positions;
+    std::unordered_map<std::string,std::pair<int, double>> positions;
+    std::unordered_map<std::string, std::pair<double, double>> market_prices;
     unsigned int number_of_rejections;
     unsigned int number_of_fills;
-    unsigned int pnl;
 
 public:
     TradingStrategy(
@@ -68,8 +76,7 @@ public:
               execution(),
               order_id(1),
               number_of_rejections(0),
-              number_of_fills(0),
-              pnl(0){}
+              number_of_fills(0) {}
     virtual void start() {is_working=true;}
     virtual void stop() {
         positions.clear();
@@ -81,11 +88,12 @@ public:
     bool process_book_update();
     bool process_execution();
     bool process_market_response();
-    int get_position(std::string symbol);
+    double get_position(std::string symbol);
     unsigned int get_number_of_rejections();
     unsigned int get_number_of_fills();
     void reset_position();
-    unsigned int get_pnl();
+    double get_pnl();
+    double get_m2m_pnl();
 
 };
 

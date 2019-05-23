@@ -7,7 +7,7 @@
 
 #include <string.h>
 
-typedef unsigned int price_t;
+typedef double price_t;
 typedef unsigned int quantity_t;
 typedef unsigned int level_t;
 
@@ -21,7 +21,7 @@ private:
     char venue[20];
     char symbol[20];
     bool is_buy;
-    unsigned int epoch_time;
+    long epoch_time;
 public:
     BookUpdate(level_t level_,
             price_t price_,
@@ -29,7 +29,7 @@ public:
             const char *venue_,
             bool is_buy_,
             const char *symbol_,
-            unsigned int epoch_time_):
+            long epoch_time_):
             level(level_),
             price(price_),
             quantity(quantity_),
@@ -45,6 +45,7 @@ public:
     const char * get_venue() const {return venue;}
     bool get_is_buy() const {return is_buy;}
     const char * get_symbol() const {return symbol;}
+    long get_timestamp() {return epoch_time;}
 };
 
 

@@ -74,14 +74,14 @@ public:
             boost::algorithm::split(vec, line, boost::is_any_of(delimeter));
 
 
-//            std::string ts("2002-01-20 23:59:59");
-//            ptime t(time_from_string(ts));
-//            ptime start(boost::gregorian::date(1970,1,1));
-//            time_duration dur = t - start;
-//            time_t epoch = dur.total_seconds();
+            std::string ts(vec[3]);
+            ptime t(time_from_string(ts));
+            ptime start(boost::gregorian::date(1970,1,1));
+            time_duration dur = t - start;
+            time_t epoch = dur.total_seconds();
 
-            BookUpdate b1(0,std::stoi(vec[4]),1000000,"GAIN",true,vec[2].c_str(),0);
-            BookUpdate b2(0,std::stoi(vec[5]),1000000,"GAIN",false,vec[2].c_str(),0);
+            BookUpdate b1(0,std::stod(vec[4]),1000000,"GAIN",true,vec[2].c_str(),epoch);
+            BookUpdate b2(0,std::stod(vec[5]),1000000,"GAIN",false,vec[2].c_str(),epoch);
             dataList.push_back(b1);
             dataList.push_back(b2);
 

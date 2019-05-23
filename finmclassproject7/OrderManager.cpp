@@ -11,7 +11,9 @@ bool OrderManager::handle_execution_order(){
     if (simulator_to_ordermanager.empty())
         return true;
 
-
+    const ExecutionOrder &e = simulator_to_ordermanager.front();
+    ordermanager_to_strategy.push(e);
+    simulator_to_ordermanager.pop();
 
     return true;
 };
@@ -39,7 +41,6 @@ bool OrderManager::handle_order(){
     if (strategy_to_ordermanager.empty())
         return true;
     const Order &e = strategy_to_ordermanager.front();
-    strategy_to_ordermanager.pop();
 
     order_id++;
     order=e;
@@ -48,6 +49,7 @@ bool OrderManager::handle_order(){
     order.setOrderID(order_id);
     //std::cout << "OMS push an order" << std::endl;
     ordermanager_to_simulator.push(order);
+    strategy_to_ordermanager.pop();
 
     return true;
 };

@@ -20,7 +20,7 @@ public:
         /* Tips: if you find the execution too long when testing you should specify the number of lines
          * you want to read by changing 0 by the number of lines
         */
-        MDReader reader("C:\\Users\\...\\EUR_USD_Week1.csv",",",0); //MODIFY THIS LINE AND THE LINE 39 in main.cpp
+        MDReader reader("/mnt/c/Users/pnang/Documents/UChicago/Coursework/FINM/finmclassproject7/EUR_USD_Week1.csv",",",0); //MODIFY THIS LINE AND THE LINE 39 in main.cpp
 
         // Get the data from CSV File
         std::vector<BookUpdate> dataList = reader.getData();

@@ -35,7 +35,7 @@ unsigned int Order::getQuantity() const
     return quantity;
 }
 
-unsigned int Order::getPrice() const
+double Order::getPrice() const
 {
     return price;
 }
@@ -60,7 +60,7 @@ void Order::setSymbol(const char * symbol_)
     strcpy(symbol,symbol_);
 }
 
-void Order::setPrice(unsigned int price_)
+void Order::setPrice(double price_)
 {
     price=price_;
 }
@@ -70,13 +70,18 @@ void Order::setSide(bool is_buy_)
     is_buy = is_buy_;
 }
 
+void Order::setTimeStamp(long timestamp_)
+{
+    timestamp = timestamp_;
+}
+
 void Order::setOrderID(unsigned int id_)
 {
     id=id_;
 
 }
 
-unsigned int Order::getTimeStamp() const
+long Order::getTimeStamp() const
 {
     return timestamp;
 }

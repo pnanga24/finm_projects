@@ -15,7 +15,7 @@ private:
     long timestamp; // epoch time: the number of seconds that have elapsed since 00:00:00 Coordinated Universal Time (UTC), Thursday, 1 January 1970,.
     bool is_buy; // buy or sell
     unsigned int id; // order id – unique identifier
-    unsigned int price;
+    double price;
     unsigned int quantity;
     char venue[20]; // company name where this order comes from
     char symbol[20];
@@ -24,7 +24,7 @@ public:
     Order(long timestamp_=0,
           bool is_buy_=true,
           unsigned int id_=0,
-          unsigned int price_=0,
+          double price_=0,
           unsigned int quantity_=0,
           const char * venue_="",
           const char * symbol_="",
@@ -47,14 +47,15 @@ public:
     void setType(ordertype e);
     bool is_valid() const;
     unsigned int getQuantity() const;
-    unsigned int getPrice() const;
+    double getPrice() const;
     void setVenue(const char * venue_);
     void setQuantity(unsigned int quantity_);
     void setSymbol(const char * symbol_);
-    void setPrice(unsigned int price_);
+    void setPrice(double price_);
     void setSide(bool is_buy_);
+    void setTimeStamp(long timestamp_);
     void setOrderID(unsigned int id_);
-    unsigned int getTimeStamp() const;
+    long getTimeStamp() const;
     bool isBuy() const;
 
 };
